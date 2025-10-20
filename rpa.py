@@ -118,3 +118,7 @@ def enviar_email_confirmacao():
 
     except Exception as e:
         print(f"❌ Erro ao enviar e-mail: {e}")
+
+coletar_dados_rick()
+filtrar_dados_processados()
+enviar_email_confirmacao()

@@ -78,3 +78,43 @@ def filtrar_dados_processados():
     conexao.commit()
     conexao.close()
     print("✅ Dados filtrados e salvos com sucesso!")
+
+def enviar_email_confirmacao():
+    try:
+        remetente = "anaclaudia.misquita@gmail.com"
+        senha_app = "zyfhqqfasymjdcri"  
+        destinatario = "anaclaudia.misquita@gmail.com"
+
+        conexao = sqlite3.connect("projeto_rpa.db")
+        cursor = conexao.cursor()
+        cursor.execute("SELECT * FROM dados_processados")
+        dados = cursor.fetchall()
+        conexao.close()
+
+        corpo = "Olá,\n\nOs dados do Rick and Morty foram coletados, filtrados e armazenados com sucesso em SQLite.\n\n"
+        corpo += "Segue a lista dos personagens filtrados:\n\n"
+
+        if not dados:
+            corpo += "Nenhum dado processado encontrado.\n"
+        else:
+            for linha in dados:
+                id_, nome, status, especie, genero = linha
+                corpo += f"- {nome} | Status: {status} | Espécie: {especie} | Gênero: {genero}\n"
+
+        corpo += "\nAtenciosamente,\nAutomação da Ana 🤖"
+
+        msg = MIMEMultipart()
+        msg['From'] = remetente
+        msg['To'] = destinatario
+        msg['Subject'] = "Confirmação de Processamento - RPA Python"
+        msg.attach(MIMEText(corpo, 'plain'))
+
+        with smtplib.SMTP("smtp.gmail.com", 587) as server:
+            server.starttls()
+            server.login(remetente, senha_app)
+            server.send_message(msg)
+
+        print("E-mail de confirmação enviado com sucesso!")
+
+    except Exception as e:
+        print(f"❌ Erro ao enviar e-mail: {e}")

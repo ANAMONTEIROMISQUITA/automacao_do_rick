@@ -22,7 +22,7 @@ A aplicação realiza automaticamente três etapas principais: coleta dados da A
 ## Como executar o projeto ⚡
 
 1. **Clone o repositório**
-    git clone 
+    git clone https://github.com/ANAMONTEIROMISQUITA/automacao_do_rick.git
 
 2. Instale as dependências necessárias
     pip install requests
